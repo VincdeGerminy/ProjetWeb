@@ -10,6 +10,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const multer = require('multer');
 const upload = multer({ dest: 'imageProfile/' });
 const fs = require('fs');
+var MongoClient = require('mongodb').MongoClient;
 /*const client = new pg.Client({
     host: 'localhost',
     database : "etd",
@@ -130,12 +131,13 @@ app.post('/changeImageProfil', upload.single('ProfilImage'), function (req, res)
         password: '50EXqC',
     });
     client.connect();
-    var resq = "UPDATE fredouil.users set avatar = '" + newPathSql + "' where id = " + req.body.id;
+    var resq = "UPDATE fredouil.users set avatar='" + newPathSql + "' where id=" + req.body.id;
     console.log(resq);
-    client.query(resq, (err, resu) => {
+    client.query(resq ,(err, resu) => {
         //if (err) throw err;
-
+        console.log(resu);
         client.end();
+
     });
     console.log(req.body.id);
     res.send("Done");
@@ -143,7 +145,19 @@ app.post('/changeImageProfil', upload.single('ProfilImage'), function (req, res)
 
 
 
-
+app.all('/quizz', function (req, res) {
+    console.log("quizz");
+    MongoClient.connect("mongodb://localhost:27017/", function (err, db) {
+        if (err) throw err;
+        var dbo = db.db("db");
+        dbo.collection("quizz").find({}).toArray(function (err, result) {
+            if (err) throw err;
+            
+            res.send(result[Math.floor(Math.random() * Math.floor(result.length))]);
+            db.close();
+        });
+    });
+});
 
 
 app.all('/', function (req, res) { 
