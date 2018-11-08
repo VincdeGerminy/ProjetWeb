@@ -1,0 +1,121 @@
+
+<!--
+
+-->
+
+
+<!DOCTYPE html>
+<html ng-app="quizzGame">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/
+1.7.2/angular.min.js"></script>
+
+
+    <script src="json/Script.js"></script>
+    <script src="app/directives/directive.js"></script>
+    <script src="app/controllers/controller.js"></script>
+    <script src="app/services/modele.js"></script>
+    <script src="app/app.js"></script>
+
+    <title>Best Page ever</title>
+</head>
+
+<body ng-controller="QuizzControlleur">
+
+
+    <div id="divContainerDivConnection" onclick="" ng-show="!isLogged()" />
+
+
+    <div id="connectionDiv">
+        <form method="POST" ng-submit="login()">
+            <div id="divConnectionText">Login</div>
+            <input type=text name=username id="usernameTextDiv" placeholder="Username" ng-model="username" required />
+            <input type=password name=mdp id="passwordTextDiv" placeholder="Password" ng-model="password" required />
+
+            <input type=submit value="Connexion" id="submitConnection"></input>
+        </form>
+    </div>
+
+    </div>
+    <div id="loginResult">
+        {{textLoginResult}}
+    </div>
+
+    <div id="bannertop">
+        <div id="QuizzOnglet" ng-click="goQuizz()">QUIZZ</div>
+        <div id="ProfileBannerDiv" ng-show="isLogged()">
+
+            <div id="timeDiv">
+                {{date | date:'H:mm'}}
+            </div>
+            <div id="imgNotifBannerDiv" onclick="displayNotificationDiv()" onblur="hideNotificationDiv()"></div>
+
+            <div id="imgProfileBannerDiv" ng-style="getBackgroundAvatar()"></div>
+            <div id="pseudoBannerDiv">{{getFirstName()}} {{getLastName()}}</div>
+            <div id="imgArrowBannerDiv" onclick="displayMenuProfilDiv()"></div>
+        </div>
+
+    </div>
+    <div id="NotificationContainer">
+        <div id="NotificationText"><h2 id="NotificationTextStyle">Notifications</h2></div>
+        <div id="NotificationList"></div>
+
+    </div>
+    <div id="MenuProfil" ng-show="isLogged()">
+        <div id="profil" class="MenuProfilItem" ng-click="goProfil()">Profil</div>
+        <div id="logout" class="MenuProfilItem" ng-click="logout()">Logout</div>
+    </div>
+    <!--<div>
+        {{lastLogging()}}
+    </div>-->
+    <div id="containerProfil" ng-show="inProfil===true">
+
+        <div id="avatarProfil" ng-style="getBackgroundAvatar()">
+            <form enctype="multipart/form-data">
+                <input id="avatarProfilSwitch" type="file" onchange="angular.element(this).scope().changeAvatar(this)">
+            </form>
+        </div>
+        <div id="nameProfil">{{getFirstName()}} {{getLastName()}}</div>
+        <div id="statusProfil">{{getStatut()}}</div>
+        <div id="historiqueProfil">
+            <div class="rowHistorique" ng-repeat="oneHistorique in myHistorique">
+                <div class="dateHistorique">{{oneHistorique.date}}</div>
+                <div class="nbReponseHistorique">{{oneHistorique.nbreponse}}</div>
+                <div class="scoreHistorique">{{oneHistorique.score}}</div>
+                <div class="timeHistorique">{{oneHistorique.temps}}</div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div id="containerQuizz" ng-show="inQuizz===true">
+        <div id="selectDifficiltyDiv" ng-show="inSelectDifficultyQuizz === true">
+            <div class="ButtonSelectDifficulty" id="quizzEasy" ng-click="startQuizz(2)">Easy</div>
+            <div class="ButtonSelectDifficulty" id="quizzMedium" ng-click="startQuizz(3)">Medium</div>
+            <div class="ButtonSelectDifficulty" id="quizzHard" ng-click="startQuizz(4)">Hard</div>
+        </div>
+
+        <div id="ResolveQuizzDiv" ng-show="inResolveQuizz===true">
+            <div id="ThemeQuizz">{{allQuestion.theme}}</div>
+            <div id="QuestionQuizz">{{questionNow.question}}<div>
+            <div class="oneRepQuizz" ng-repeat="(ind,reponse) in questionNow.propositions" ng-click="nextQuestion(ind)">{{reponse}}</div>
+        </div>
+
+
+
+    </div>
+
+
+</body>
+
+
+
+
+
+
+</html> 
